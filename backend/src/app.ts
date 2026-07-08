@@ -5,6 +5,9 @@ import morgan from 'morgan'
 // Routes
 import { AuthRoutes } from './modules/auth/auth.route.js'
 
+// Global Error Handler
+import globalErrorHandler from './utils/globalErrorHandler.js'
+
 const app = express()
 
 // Middelwares
@@ -22,5 +25,8 @@ app.get('/health', (req, res) => {
         message: "DevConnect API is running 🚀"
     });
 })
+
+// Global Error Handler
+app.use(globalErrorHandler)
 
 export default app

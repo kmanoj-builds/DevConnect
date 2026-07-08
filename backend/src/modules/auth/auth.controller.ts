@@ -1,11 +1,14 @@
 import { Request, Response } from "express"
 import { registerUser } from "./auth.service.js";
+import asyncHandler from "../../utils/asyncHandler.js";
 
-export const register = async (
-    req: Request,
-    res: Response
-) => {
-    try {
+export const register = asyncHandler(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+        
+        // Register Service
         const user = await registerUser(req.body)
 
         res.status(201).json({
@@ -13,13 +16,5 @@ export const register = async (
             message: "User registered successfully",
             data: user,
         })
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message:
-                error instanceof Error
-                    ? error.message
-                    : "Something went wrong",
-        })
     }
-}
+)
