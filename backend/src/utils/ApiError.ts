@@ -12,10 +12,11 @@ class ApiError extends Error {
         this.statusCode = statusCode
         this.isOperational = true
 
+        Object.setPrototypeOf(this, ApiError.prototype)
+        
         Error.captureStackTrace(this, this.constructor)
     }
 }
 
-Object.setPrototypeOf(this, ApiError.prototype)
 
 export default ApiError
