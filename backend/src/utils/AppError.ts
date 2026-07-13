@@ -1,22 +1,25 @@
-class ApiError extends Error {
+class AppError extends Error {
 
     public readonly statusCode: number
     public readonly isOperational: boolean
+    public readonly errors?: unknown[]
 
     constructor(
         statusCode: number,
-        message: string
+        message: string,
+        errors?: unknown[]
     ) {
         super(message)
 
         this.statusCode = statusCode
+        this.errors = errors
         this.isOperational = true
 
-        Object.setPrototypeOf(this, ApiError.prototype)
+        Object.setPrototypeOf(this, AppError.prototype)
         
         Error.captureStackTrace(this, this.constructor)
     }
 }
 
 
-export default ApiError
+export default AppError
