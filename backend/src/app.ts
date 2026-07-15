@@ -5,6 +5,8 @@ import morgan from 'morgan'
 // Global Error Handler
 import globalErrorHandler from './middelware/globalErrorHandler.js'
 import notFound from './middelware/notFound.middleware.js'
+
+// Global Routes
 import router from './routes/index.js'
 
 const app = express()

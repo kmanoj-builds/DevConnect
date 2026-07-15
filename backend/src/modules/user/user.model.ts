@@ -1,33 +1,127 @@
-import { Schema, model } from "mongoose"
+import { model, Schema } from "mongoose"
 import { IUser } from "./user.interface.js"
 
 const userSchema = new Schema<IUser>(
     {
-        firstName: {
+        // Identity
+        name: {
             type: String,
             required: true,
             trim: true,
-            minLength: 4
+            minlength: 3,
+            maxlength: 50,
         },
-        lastName: {
-            type: String,
-            trim: true
-        },
-        emailId: {
+
+        username: {
             type: String,
             required: true,
             unique: true,
+            trim: true,
             lowercase: true,
-            minLength: 8
+            minlength: 3,
+            maxlength: 30,
         },
+
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true,
+            lowercase: true,
+        },
+
         password: {
             type: String,
-            required: true
-        }
+            required: true,
+            minlength: 6,
+            select: false,
+        },
+
+        // Profile
+        bio: {
+            type: String,
+            default: "",
+            maxlength: 300,
+        },
+
+        avatar: {
+            type: String,
+            default: "",
+        },
+
+        coverImage: {
+            type: String,
+            default: "",
+        },
+
+        skills: {
+            type: [String],
+            default: [],
+        },
+
+        location: {
+            type: String,
+            default: "",
+        },
+
+        website: {
+            type: String,
+            default: "",
+        },
+
+        socialLinks: {
+            github: {
+                type: String,
+                default: "",
+            },
+
+            linkedin: {
+                type: String,
+                default: "",
+            },
+
+            portfolio: {
+                type: String,
+                default: "",
+            },
+        },
+
+        // Status
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
+
+        isBlocked: {
+            type: Boolean,
+            default: false,
+        },
+
+        lastSeen: {
+            type: Date,
+        },
+
+
+        // Authentication
+        provider: {
+            type: String,
+            enum: ["EMAIL", "GOOGLE", "GITHUB"],
+            default: "EMAIL",
+        },
+
+        refreshToken: {
+            type: String,
+            select: false,
+        },
+
+        isVerified: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
-        timestamps: true
+        timestamps: true,
     }
 )
 
-export const User = model<IUser>("User", userSchema)
+export default model<IUser>("User", userSchema);

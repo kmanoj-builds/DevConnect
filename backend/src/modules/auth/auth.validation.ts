@@ -1,13 +1,29 @@
-import { z } from 'zod'
+import z from "zod"
 
 export const registerSchema = z.object({
 
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
+    name: z
+        .string()
+        .trim()
+        .min(3, "Name must be at least 3 characters")
+        .max(50),
 
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    username: z
+        .string()
+        .trim()
+        .toLowerCase()
+        .min(3)
+        .max(30),
 
-    emailId: z.email("Invalid email address"),
+    email: z
+        .string()
+        .trim()
+        .email("Invalid email address")
+        .toLowerCase(),
 
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z
+        .string()
+        .min(6)
+        .max(50)
 
-})
+}).strict()

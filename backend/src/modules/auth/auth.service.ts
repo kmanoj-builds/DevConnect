@@ -1,24 +1,48 @@
+import User from "../user/user.model.js"
 import bcrypt from "bcryptjs"
-import { User } from "../user/user.model.js"
-import { IUser } from "../user/user.interface.js"
 
-export const registerUser = async (data: IUser) => {
-    const { emailId, password } = data
+import { RegisterDto } from "./dto/register.dto.js"
 
-    // Check for existing user
-    const existingUser = await User.findOne({ emailId })
+import AppError from "../../utils/AppError.js"
+
+const register = async (payload: RegisterDto) => {
+
+    // Check if email or username already exists
+    const existingUser = await User.findOne({
+        $or: [
+            { email: payload.email },
+            { username: payload.username }
+        ]
+    })
+
     if (existingUser) {
-        throw new Error("Email already exists")
+        if (existingUser.email === payload.email) {
+            throw new AppError(409, "Email already exists")
+        }
+
+        if (existingUser.username === payload.username) {
+            throw new AppError(409, "Username already exists")
+        }
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10)
+    // Hash Password
+    const hashedPassword = await bcrypt.hash(payload.password, 10)
 
     // Create User
-    const user = User.create({
-        ...data,
+    const user = await User.create({
+        ...payload,
         password: hashedPassword
     })
 
-    return user
+    return {
+        id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+    }
+}
+
+
+export const authService = {
+    register,
 }
