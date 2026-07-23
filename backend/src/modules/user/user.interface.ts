@@ -43,6 +43,12 @@ export interface IUser {
     // Metadata
     createdAt: Date;
     updatedAt: Date;
+
+    // utils functions
+    comparePassword(candidatePassword: string): Promise<boolean>;
+    generateAccessToken(): string;
+    generateRefreshToken(): string;
+    
 }
 /*
 

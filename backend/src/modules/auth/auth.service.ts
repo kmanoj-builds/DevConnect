@@ -25,14 +25,11 @@ const register = async (payload: RegisterDto) => {
         }
     }
 
-    // Hash Password
-    const hashedPassword = await bcrypt.hash(payload.password, 10)
+    // // Hash Password
+    // const hashedPassword = await bcrypt.hash(payload.password, 10)
 
     // Create User
-    const user = await User.create({
-        ...payload,
-        password: hashedPassword
-    })
+    const user = await User.create(payload)
 
     return {
         id: user._id,
